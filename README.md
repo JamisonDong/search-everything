@@ -55,17 +55,25 @@ search-everything/
 
 ## 🚀 快速启动指南
 
-### 方式一：一键脚本启动 (推荐)
+### 方式一：纯净 Windows 电脑一键启动 (目标机什么都没有，但可以联网)
 
-- **Mac / Linux**：
-  ```bash
-  ./start_mac.sh
-  ```
-- **Windows**：
-  直接双击运行 `start_windows.bat`。
+1. **直接双击运行 [start_windows.bat](file:///Users/djc/GithubRepos/search-everything/start_windows.bat)**：
+   - 脚本会自动检测系统环境。若电脑**完全没有安装 Python**，将自动通过系统原生工具静默下载就绪 Python 3.11 环境。
+   - 自动通过国内镜像源极速安装 DuckDB、FastAPI 等后端依赖。
+   - 前端大屏静态包已内置，**完全不需要安装 Node.js 或 npm**。
+   - 自动启动本地涉密服务器并在系统默认浏览器 (Edge/Chrome) 中自动打开大屏：
+     👉 `http://127.0.0.1:8000`
 
-启动脚本会自动检测环境、准备数据库并在系统浏览器中自动打开：
-👉 `http://127.0.0.1:8000`
+2. **现场导入 20+ 个 CSV 数据**：
+   - 将 20 多个 CSV 文件直接拷贝到 `data\csv_sources\` 目录下。
+   - 双击运行 [import_csv.bat](file:///Users/djc/GithubRepos/search-everything/import_csv.bat)，脚本将全自动完成清洗、排重与 DuckDB 列存索引构建。
+
+---
+
+### 方式二：Mac / Linux 一键启动
+```bash
+./start_mac.sh
+```
 
 ---
 
