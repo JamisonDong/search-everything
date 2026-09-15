@@ -15,7 +15,12 @@ cd /d "%~dp0"
 if not exist ".venv" (
     echo [*] 正在初始化 Python 虚拟运行环境...
     python -m venv .venv
-    call .venv\Scripts\pip install -r backend\requirements.txt
+    if exist "offline_wheels" (
+        echo [*] 检测到离线依赖包 (offline_wheels)，执行纯断网无网安装...
+        call .venv\Scripts\pip.exe install --no-index --find-links=offline_wheels -r backend\requirements.txt
+    ) else (
+        call .venv\Scripts\pip.exe install -r backend\requirements.txt
+    )
 )
 
 :: 2. 检查数据库文件

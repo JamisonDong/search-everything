@@ -17,7 +17,12 @@ echo "=========================================================="
 if [ ! -d ".venv" ]; then
     echo "[*] 初始化 Python 虚拟运行环境..."
     python3 -m venv .venv
-    .venv/bin/pip install -r backend/requirements.txt
+    if [ -d "offline_wheels" ]; then
+        echo "[*] 检测到离线依赖包 (offline_wheels/)，执行纯断网无网安装..."
+        .venv/bin/pip install --no-index --find-links=offline_wheels/ -r backend/requirements.txt
+    else
+        .venv/bin/pip install -r backend/requirements.txt
+    fi
 fi
 
 # 2. 检查数据库文件
@@ -36,8 +41,12 @@ fi
 
 # 3. 检查前端静态产物
 if [ ! -d "frontend/dist" ]; then
-    echo "[*] 检测到前端尚未构建，开始本地静态打包..."
-    cd frontend && npm run build && cd ..
+    if command -v npm &> /dev/null; then
+        echo "[*] 检测到前端尚未构建，开始本地静态打包..."
+        cd frontend && npm run build && cd ..
+    else
+        echo "[!] 警告: 缺少 frontend/dist 静态产物且系统无 npm，请使用离线分发包完整产物。"
+    fi
 fi
 
 echo "[√] 系统准备就绪，正在启动本地涉密服务器 (http://127.0.0.1:8000)..."

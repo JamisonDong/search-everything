@@ -115,3 +115,39 @@ python backend/main.py
 - [x] 人员全景档案卡片调阅
 - [x] 涉密安全审计操作轨迹上报与留痕
 - [x] 动态数据打码脱敏模式
+
+---
+
+## 🔒 纯断网物理隔离单机部署指南 (完全无法联网)
+
+针对目标电脑**完全无法连接外网**的严苛涉密机房环境，系统提供了全链路纯离线交付方案：
+
+### 第一步：在有网电脑上生成离线分发包
+在有网络连接的电脑上拉取工程，运行自动打包工具：
+```bash
+python3 backend/scripts/package_offline.py --output xuecheng_offline_v1.0.zip
+```
+> 若希望将已导入好的 1600 万数据库直接带入目标机，可追加 `--include-db` 参数：
+> `python3 backend/scripts/package_offline.py --output xuecheng_offline_v1.0.zip --include-db`
+
+打包脚本会自动：
+1. 预先构建前端静态文件至 `frontend/dist`（**断网机无需安装 Node.js/npm**）。
+2. 将后端所需的全部 Python 依赖以二进制 Wheel 下载至 `offline_wheels/`。
+3. 封装为单一压缩包 `xuecheng_offline_v1.0.zip`（仅约 20MB）。
+
+### 第二步：介质拷贝与安全摆渡
+通过涉密合规光盘刻录或专用安全摆渡 U 盘，将 `xuecheng_offline_v1.0.zip` 拷贝至目标断网机并解压。
+
+### 第三步：断网机一键初始化与启动
+目标机只需预先安装 Python 3.10+，解压后直接执行：
+
+- **Windows 断网机**：
+  1. 双击运行 `install_offline.bat`（自动利用本地 `offline_wheels/` 零网络安装依赖）。
+  2. 双击运行 `start_windows.bat`（启动服务并自动打开浏览器 `http://127.0.0.1:8000`）。
+- **Mac / Linux 断网机**：
+  1. 运行 `./install_offline.sh`。
+  2. 运行 `./start_mac.sh`。
+
+### 第四步：数据就绪
+- 若打包时使用了 `--include-db`，解压即自带 1600 万数据，**开箱即用、秒级查询**。
+- 若现场导入真实数据，只需将 20+ 个 CSV 复制到 `data/csv_sources/` 目录，执行 `.venv/bin/python backend/scripts/import_csv.py` 即可现场建库。
