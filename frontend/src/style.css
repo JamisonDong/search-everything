@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+/* 自定义科技感滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #090e21;
+}
+::-webkit-scrollbar-thumb {
+  background: #1b2d4b;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00f0ff;
+}
+
+/* 科技感网格背景 */
+.tech-grid-bg {
+  background-image: radial-gradient(rgba(0, 240, 255, 0.08) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* 顶部大屏发光边框效果 */
+.command-border {
+  position: relative;
+}
+.command-border::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+}

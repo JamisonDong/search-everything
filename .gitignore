@@ -1,0 +1,25 @@
+# 涉密数据源与数据库物理文件 (严禁提交代码仓库)
+data/csv_sources/*.csv
+data/*.duckdb*
+data/*.db*
+data/*.parquet
+
+# 涉密操作审计日志
+logs/*.jsonl
+logs/*.log
+
+# Python 依赖与缓存
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Node 依赖与缓存
+node_modules/
+frontend/node_modules/
+frontend/npm-cache/
+frontend/dist/
+
+# 系统临时文件
+.DS_Store
+*.tmp
