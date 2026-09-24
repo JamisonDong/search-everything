@@ -1,5 +1,6 @@
 # 涉密数据源与数据库物理文件 (严禁提交代码仓库)
 data/csv_sources/*.csv
+data/demo_csv/
 data/*.duckdb*
 data/*.db*
 data/*.parquet

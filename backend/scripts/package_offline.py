@@ -22,6 +22,14 @@ def run_cmd(cmd, cwd=PROJECT_ROOT):
         print(f"[!] 指令失败，退出码: {res.returncode}")
         sys.exit(res.returncode)
 
+def write_zip_entry(zipf: zipfile.ZipFile, src: Path, arcname: str):
+    """写入压缩包；Windows 脚本统一转为 CRLF 换行 (LF 换行的 .bat 在 cmd 中 goto 跳转可能找不到标签)"""
+    if src.suffix.lower() in (".bat", ".ps1"):
+        data = src.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
+        zipf.writestr(str(arcname), data, compress_type=zipfile.ZIP_DEFLATED)
+    else:
+        zipf.write(src, arcname)
+
 def main():
     parser = argparse.ArgumentParser(description="学城项目纯离线部署分发包制作工具")
     parser.add_argument("--output", type=str, default="xuecheng_offline_release.zip", help="输出压缩包文件名")
@@ -63,6 +71,8 @@ def main():
         "offline_wheels",
         "start_mac.sh",
         "start_windows.bat",
+        "setup_windows.bat",
+        "import_csv.bat",
         "install_offline.sh",
         "install_offline.bat",
         "README.md",
@@ -85,7 +95,7 @@ def main():
             if not p.exists():
                 continue
             if p.is_file():
-                zipf.write(p, p.relative_to(PROJECT_ROOT))
+                write_zip_entry(zipf, p, str(p.relative_to(PROJECT_ROOT)))
             elif p.is_dir():
                 for root, dirs, files in os.walk(p):
                     # 排除 pycache 等
@@ -95,7 +105,7 @@ def main():
                         if f.endswith((".pyc", ".DS_Store")):
                             continue
                         full_path = Path(root) / f
-                        zipf.write(full_path, full_path.relative_to(PROJECT_ROOT))
+                        write_zip_entry(zipf, full_path, str(full_path.relative_to(PROJECT_ROOT)))
 
     zip_size_mb = output_zip_path.stat().st_size / (1024 * 1024)
     print(f"\n==========================================================")

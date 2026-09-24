@@ -1,55 +1,68 @@
 @echo off
 chcp 65001 >nul
+setlocal
 :: ==============================================================================
-:: 学城私有项目 - Windows 现场一键导数工具 (导入 20+ 个 CSV 1600万数据)
+:: 人员数据态势分析大屏 - 从 CSV 创建或重建数据库
+:: 读取 data\csv_sources 下的全部 CSV，清洗、去重并建立索引，生成 data\xuecheng.duckdb
+:: 注意: 批处理的 if/else 代码块内不要写半角括号，会被 cmd 误判为代码块结束
 :: ==============================================================================
-
-echo ==========================================================
-echo     学城私有项目 - 1600万数据本地数据库一键导入工具       
-echo ==========================================================
 
 cd /d "%~dp0"
 
-:: 1. 检查 Python 运行环境
-if not exist ".venv\Scripts\python.exe" (
-    echo [*] 检测到运行环境尚未初始化，正在自动配置环境...
-    call setup_windows.bat
-)
-
-:: 2. 检查 CSV 数据源目录
-if not exist "data\csv_sources" (
-    mkdir "data\csv_sources"
-)
-
-dir /b "data\csv_sources\*.csv" >nul 2>&1
-if %errorlevel% neq 0 (
-    echo [!] 提示: 在 data\csv_sources 目录下未检测到任何 .csv 文件！
-    echo 请将您的 20 多个原始 CSV 文件复制到该目录下:
-    echo 👉 %~dp0data\csv_sources\
-    echo.
-    set /p CHOICE="是否生成 20 万条高仿真测试数据用于体验？(Y/N): "
-    if /i "%CHOICE%"=="Y" (
-        echo [*] 正在生成 20 万条测试数据并切分为 20 个 CSV 文件...
-        call .venv\Scripts\python.exe backend\scripts\generate_mock.py --total 200000 --num-files 20
-    ) else (
-        echo [!] 请放入真实 CSV 文件后再次双击运行本脚本。
-        pause
-        exit /b 0
-    )
-)
-
-:: 3. 执行高效清洗、排重与建库
-echo [*] 开始执行数据清洗、唯一性排重与 DuckDB 列存索引构建...
-call .venv\Scripts\python.exe backend\scripts\import_csv.py
-
-if %errorlevel% neq 0 (
-    echo [!] 导入过程中出现错误，请检查 CSV 格式。
-    pause
-    exit /b 1
-)
-
 echo ==========================================================
-echo  [√] 1600 万数据导入与全量索引构建完毕！
-echo  现在您可以直接双击 start_windows.bat 启动大屏系统进行检索！
+echo     人员数据态势分析大屏 - 从 CSV 创建数据库
+echo ==========================================================
+
+:: 1. 运行环境
+if exist ".venv\Scripts\python.exe" goto :CHECK_CSV
+echo [*] 运行环境尚未初始化，正在自动配置...
+call setup_windows.bat --from-start
+if not exist ".venv\Scripts\python.exe" goto :FAIL
+
+:: 2. CSV 数据源
+:CHECK_CSV
+if not exist "data\csv_sources" mkdir "data\csv_sources"
+dir /b "data\csv_sources\*.csv" >nul 2>&1
+if not errorlevel 1 goto :CHECK_DB
+echo [!] data\csv_sources 目录下没有 CSV 文件。
+echo     请把原始 CSV 文件复制到: %~dp0data\csv_sources\
+echo     然后重新双击 import_csv.bat。
+goto :FAIL
+
+:: 3. 已有数据库时确认重建
+:CHECK_DB
+if not exist "data\xuecheng.duckdb" goto :IMPORT
+echo [!] 已存在数据库 data\xuecheng.duckdb。
+echo     继续将按 data\csv_sources 中的全部 CSV 重新创建数据库，原数据库会被替换。
+echo     请先关闭正在运行的大屏服务窗口。
+choice /C YN /N /M "是否继续？[Y/N]: "
+if errorlevel 2 goto :CANCEL
+del /q "data\xuecheng.duckdb" "data\xuecheng.duckdb.wal" >nul 2>&1
+if not exist "data\xuecheng.duckdb" goto :IMPORT
+echo [!] 旧数据库正在被占用，无法替换。请先关闭大屏服务窗口后重试。
+goto :FAIL
+
+:: 4. 导入与建索引
+:IMPORT
+echo [*] 开始清洗数据、去重并建立索引。1600 万条约需 3~5 分钟，请勿关闭窗口...
+".venv\Scripts\python.exe" backend\scripts\import_csv.py
+if not errorlevel 1 goto :DONE
+echo [!] 导入失败，请检查上方错误信息与 CSV 文件格式。
+del /q "data\xuecheng.duckdb" "data\xuecheng.duckdb.wal" >nul 2>&1
+goto :FAIL
+
+:DONE
+echo ==========================================================
+echo  [√] 数据库创建完成！双击 start_windows.bat 即可启动大屏。
 echo ==========================================================
 pause
+exit /b 0
+
+:CANCEL
+echo 已取消，原数据库保持不变。
+pause
+exit /b 0
+
+:FAIL
+pause
+exit /b 1

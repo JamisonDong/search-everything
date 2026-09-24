@@ -62,20 +62,22 @@ search-everything/
 
 ## 🚀 快速启动指南
 
-### 方式一：纯净 Windows 电脑一键启动 (目标机什么都没有，但可以联网)
+### 方式一：Windows 电脑一键安装启动 (目标机可联网，无需访问 GitHub)
 
-1. **直接双击运行 [start_windows.bat](file:///Users/djc/GithubRepos/search-everything/start_windows.bat)**：
-   - 脚本会自动检测系统环境。若电脑**完全没有安装 Python**，将自动通过系统原生工具静默下载就绪 Python 3.11 环境。
-   - 自动通过国内镜像源极速安装 DuckDB、FastAPI 等后端依赖。
-   - 前端大屏静态包已内置，**完全不需要安装 Node.js 或 npm**。
-   - 自动启动本地涉密服务器并在系统默认浏览器 (Edge/Chrome) 中自动打开大屏：
-     👉 `http://127.0.0.1:8000`
+1. **拿到安装包**：在能访问 GitHub 的电脑上下载本仓库 ZIP（或用 `git archive` 打包），通过 U 盘 / 内部网盘拷到目标机并解压。目标机不需要安装 Git、Node.js。
+2. **放入数据**：把 20 多个原始 CSV 文件复制到 `data\csv_sources\` 目录（没有则新建）。
+3. **双击 `start_windows.bat`**，首次运行会自动完成：
+   - 未安装 Python 时，自动安装 Python 3.11 到当前用户目录（无需管理员权限，依次尝试 winget、国内镜像、官方源）；
+   - 通过阿里云 / 清华镜像安装 DuckDB、FastAPI 等依赖；
+   - **从 CSV 自动创建数据库** `data\xuecheng.duckdb` 并建立索引（嵌入式数据库，无需安装任何数据库软件；1600 万条约需 3~5 分钟）；
+   - 配置本地访问域名：在本机 hosts 中加入 `127.0.0.1 dashboard.internal`（**首次会弹出一次管理员授权，请点“是”**），并将该域名加入系统代理的例外列表；
+   - 启动服务，就绪后自动在浏览器打开大屏 👉 `http://dashboard.internal:8000`
 
-2. **现场导入 20+ 个 CSV 数据**：
-   - 将 20 多个 CSV 文件直接拷贝到 `data\csv_sources\` 目录下。
-   - 双击运行 [import_csv.bat](file:///Users/djc/GithubRepos/search-everything/import_csv.bat)，脚本将全自动完成清洗、排重与 DuckDB 列存索引构建。
+之后每次使用直接双击 `start_windows.bat` 即可；关闭命令行窗口即停止服务。
 
----
+- **域名与端口**：在 `start_windows.bat` 顶部的 `APP_DOMAIN`、`APP_PORT` 修改。域名只映射到本机 `127.0.0.1`，其他电脑无法访问。若拒绝了管理员授权或被安全软件拦截，会自动改用 `http://127.0.0.1:8000`。
+- **没有 CSV 时**：脚本会提示放入 CSV；也可选择生成 20 万条演示数据（单独存放在 `data\demo_csv\`，不会混入真实数据）。
+- **更换 / 追加数据**：把 CSV 放入 `data\csv_sources\` 后，先关闭大屏窗口，再双击 `import_csv.bat`，按提示确认后会按目录中的全部 CSV 重建数据库。
 
 ### 方式二：Mac / Linux 一键启动
 ```bash
@@ -168,7 +170,7 @@ python backend/main.py
 
 - **Windows 断网机**：
   1. 双击运行 `install_offline.bat`（自动利用本地 `offline_wheels/` 零网络安装依赖）。
-  2. 双击运行 `start_windows.bat`（启动服务并自动打开浏览器 `http://127.0.0.1:8000`）。
+  2. 双击运行 `start_windows.bat`（配置本地域名、启动服务并自动打开 `http://dashboard.internal:8000`）。
 - **Mac / Linux 断网机**：
   1. 运行 `./install_offline.sh`。
   2. 运行 `./start_mac.sh`。
