@@ -29,8 +29,8 @@
         </div>
 
         <div class="header-title">
-          <h1>学城人员综合数据态势分析大屏</h1>
-          <p>XUECHENG PERSONNEL DATA SITUATION AWARENESS PLATFORM</p>
+          <h1>人员数据态势分析大屏</h1>
+          <p>PERSONNEL DATA SITUATION AWARENESS PLATFORM</p>
         </div>
 
         <div class="header-side header-right">
@@ -541,10 +541,10 @@ defineExpose({ refresh: () => { fetchStats(); fetchSystemStatus(); fetchAudit() 
   text-align: center;
 }
 .header-title h1 {
-  font-size: 38px;
+  font-size: 42px;
   font-weight: 800;
   line-height: 50px;
-  letter-spacing: 6px;
+  letter-spacing: 10px;
   background: linear-gradient(180deg, #ffffff 30%, #8fd8ff 100%);
   -webkit-background-clip: text;
   background-clip: text;

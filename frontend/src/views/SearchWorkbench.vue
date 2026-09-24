@@ -13,7 +13,7 @@
           <div>
             <div class="flex items-center gap-3">
               <h1 class="text-xl font-black tracking-wider text-white">
-                学城人员信息检索工作台
+                人员信息检索工作台
               </h1>
               <span class="rounded bg-red-950/80 border border-red-500/80 px-2 py-0.5 text-xs font-bold text-red-400 tracking-widest animate-pulse">
                 涉密专机 · 严禁外联

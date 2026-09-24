@@ -16,7 +16,7 @@ def test_full_system():
     print("1. 测试前端离线静态页面挂载...")
     res = client.get("/")
     assert res.status_code == 200, f"Expected 200, got {res.status_code}"
-    assert "学城人员综合数据智能检索与态势分析大屏" in res.text or "<!DOCTYPE html>" in res.text
+    assert "人员数据态势分析大屏" in res.text or "<!DOCTYPE html>" in res.text
     print("   [√] 前端单机离线静态首页正常交付！")
 
     print("2. 测试大屏聚合统计 API (/api/dashboard/stats)...")
