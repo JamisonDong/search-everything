@@ -2,6 +2,8 @@
 
 > 专为政府工作人员打造的 **1600万级** 大数据离线检索、态势感知大屏与单机涉密管理系统。
 
+![态势大屏预览 (1600 万条仿真数据)](docs/dashboard-preview.png)
+
 ---
 
 ## 🌟 核心特色与优势
@@ -19,6 +21,10 @@
 4. **20+ 原始 CSV 智能导入管线**：
    - 自动识别 `UTF-8`、`GBK`、`GB18030` 等多种编码格式。
    - 自动执行数据清洗、类型推断、异常值兜底、基于 `id` 的主键排重与多维索引构建。
+5. **汇报级态势大屏 + 检索工作台双视图**：
+   - 默认打开 **态势大屏**：按 1920×1080 设计、任意分辨率等比铺满一屏，一键全屏，适合投屏/拼接屏向领导汇报。
+   - 大屏只展示聚合统计（总量翻牌器、城市分布、年龄金字塔、性别与收入结构、审计动态），**不出现任何个人明细**；审计动态中的证件号自动打码、不显示检索关键词。
+   - 点击城市柱图或排行榜可直接下钻到 **检索工作台** 做人员明细检索与档案调阅。
 
 ---
 
@@ -39,9 +45,10 @@ search-everything/
 │   └── main.py               # 服务启动主入口
 ├── frontend/                 # 涉密大屏前端源码 (Vue 3 + ECharts + TailwindCSS)
 │   ├── src/
-│   │   ├── components/       # 大屏图表、水印、档案抽屉、审计抽屉组件
-│   │   └── App.vue           # 指挥大屏与检索工作台主视图
-│   └── dist/                 # 预编译好的纯本地离线静态资源包
+│   │   ├── views/            # DashboardScreen 态势大屏 / SearchWorkbench 检索工作台
+│   │   ├── components/       # 大屏面板与翻牌器 (screen/)、水印、档案抽屉、审计抽屉组件
+│   │   └── App.vue           # 视图切换外壳 (大屏 ⇄ 检索工作台)
+│   └── dist/                 # 预编译好的纯本地离线静态资源包 (已提交入库，改动前端后需重新构建并提交)
 ├── data/                     # 数据专属目录 (.gitignore 严格隔离)
 │   ├── csv_sources/          # 存放用户的 20+ 个原始 CSV 文件
 │   └── xuecheng.duckdb       # 本地 DuckDB 物理数据库单文件
@@ -95,6 +102,7 @@ python backend/scripts/import_csv.py
 > `python backend/scripts/generate_mock.py --total 200000 --num-files 20`
 
 #### 3. 编译前端静态文件 (若改动前端代码)
+仓库已附带编译好的 `frontend/dist`，只有修改了 `frontend/src` 才需要重新构建，并把新的 `dist` 一并提交：
 ```bash
 cd frontend
 npm install
@@ -112,8 +120,9 @@ python backend/main.py
 
 ## 🧪 自动化测试验证
 
-运行内置全链路自动化测试套件：
+运行内置全链路自动化测试套件（测试客户端需额外安装 `httpx`）：
 ```bash
+.venv/bin/pip install httpx
 .venv/bin/python tests/test_system.py
 ```
 测试项包括：
@@ -131,10 +140,18 @@ python backend/main.py
 针对目标电脑**完全无法连接外网**的严苛涉密机房环境，系统提供了全链路纯离线交付方案：
 
 ### 第一步：在有网电脑上生成离线分发包
-在有网络连接的电脑上拉取工程，运行自动打包工具：
-```bash
-python3 backend/scripts/package_offline.py --output xuecheng_offline_v1.0.zip
-```
+在有网络连接的电脑上拉取工程，按**目标机的操作系统**选择打包工具：
+
+- **目标机是 Windows**（最常见，打包机可以是 Mac/Linux/Windows）：
+  ```bash
+  python3 backend/scripts/package_windows.py --output xuecheng_windows_v1.0.zip --py-version 311
+  ```
+  `--py-version` 必须与目标机安装的 Python 版本一致（如 3.11 填 `311`，3.12 填 `312`）。
+- **目标机与打包机为同一操作系统和 Python 版本**：
+  ```bash
+  python3 backend/scripts/package_offline.py --output xuecheng_offline_v1.0.zip
+  ```
+  注意 `package_offline.py` 只下载**打包机本机平台**的依赖，在 Mac 上打的包无法装到 Windows 断网机上。
 > 若希望将已导入好的 1600 万数据库直接带入目标机，可追加 `--include-db` 参数：
 > `python3 backend/scripts/package_offline.py --output xuecheng_offline_v1.0.zip --include-db`
 
