@@ -78,6 +78,14 @@ def download_windows_wheels(dest_dir: Path, py_version: str = "311"):
     print(f"[√] Windows 离线 Wheels 下载完毕，共计 {len(wheels)} 个轮子文件。")
     return len(wheels)
 
+def write_zip_entry(zipf: zipfile.ZipFile, src: Path, arcname: str):
+    """写入压缩包；Windows 脚本统一转为 CRLF 换行 (LF 换行的 .bat 在 cmd 中 goto 跳转可能找不到标签)"""
+    if src.suffix.lower() in (".bat", ".ps1"):
+        data = src.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
+        zipf.writestr(str(arcname), data, compress_type=zipfile.ZIP_DEFLATED)
+    else:
+        zipf.write(src, arcname)
+
 def main():
     parser = argparse.ArgumentParser(description="制作学城项目 Windows 专属离线部署安装包")
     parser.add_argument("--output", type=str, default="xuecheng_windows_v1.0.zip", help="输出压缩包名")
@@ -115,6 +123,7 @@ def main():
         ("frontend/dist", "frontend/dist"),
         ("offline_wheels_win", "offline_wheels"), # 在 Windows 解压包中统一命名为 offline_wheels
         ("start_windows.bat", "start_windows.bat"),
+        ("setup_windows.bat", "setup_windows.bat"),
         ("install_offline.bat", "install_offline.bat"),
         ("import_csv.bat", "import_csv.bat"),
         ("README.md", "README.md"),
@@ -135,7 +144,7 @@ def main():
             if not src_path.exists():
                 continue
             if src_path.is_file():
-                zipf.write(src_path, dest_rel)
+                write_zip_entry(zipf, src_path, dest_rel)
             elif src_path.is_dir():
                 for root, dirs, files in os.walk(src_path):
                     if "__pycache__" in root:
@@ -145,7 +154,7 @@ def main():
                             continue
                         f_full = Path(root) / f
                         f_dest = Path(dest_rel) / f_full.relative_to(src_path)
-                        zipf.write(f_full, str(f_dest))
+                        write_zip_entry(zipf, f_full, str(f_dest))
 
     zip_mb = output_zip.stat().st_size / (1024 * 1024)
     print("\n==========================================================")

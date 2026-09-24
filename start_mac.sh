@@ -34,8 +34,8 @@ if [ ! -f "data/xuecheng.duckdb" ]; then
         .venv/bin/python backend/scripts/import_csv.py
     else
         echo "[*] 未发现原始 CSV，生成仿真演示数据 (20万条)..."
-        .venv/bin/python backend/scripts/generate_mock.py --total 200000 --num-files 20
-        .venv/bin/python backend/scripts/import_csv.py
+        .venv/bin/python backend/scripts/generate_mock.py --total 200000 --num-files 20 --output-dir data/demo_csv
+        .venv/bin/python backend/scripts/import_csv.py --csv-dir data/demo_csv
     fi
 fi
 
