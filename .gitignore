@@ -18,10 +18,10 @@ __pycache__/
 node_modules/
 frontend/node_modules/
 frontend/npm-cache/
-frontend/dist/
 
 # 系统临时文件与离线介质包
 .DS_Store
 *.tmp
 *.zip
 offline_wheels/
+offline_wheels_win/

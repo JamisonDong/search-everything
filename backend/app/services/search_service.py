@@ -63,12 +63,21 @@ class SearchService:
             kw = keyword.strip()
             # 关键字转义
             kw_clean = kw.replace("'", "''")
-            # 匹配 姓名、外文姓名、证件号、详细地址
+            # ILIKE 在千万级中文长文本列 (地址) 上比 LIKE 慢 5 倍以上。中文与数字不存在大小写，
+            # 直接用 LIKE；关键词含英文字母时改用 RE2 大小写不敏感正则，仍比 ILIKE 快数倍
+            if re.search(r"[A-Za-z]", kw):
+                pattern = re.sub(r"([\\.^$|?*+()\[\]{}])", r"\\\1", kw).replace("'", "''")
+                name_cond = f"regexp_matches(name, '{pattern}', 'i')"
+                address_cond = f"regexp_matches(address, '{pattern}', 'i')"
+            else:
+                name_cond = f"name LIKE '%{kw_clean}%'"
+                address_cond = f"address LIKE '%{kw_clean}%'"
+            # 匹配 姓名、外文姓名、证件号、详细地址 (证件号末位校验码统一按大写 X 匹配)
             conditions.append(f"""(
-                name ILIKE '%{kw_clean}%' OR 
-                foreign_name ILIKE '%{kw_clean}%' OR 
-                id LIKE '%{kw_clean}%' OR 
-                address ILIKE '%{kw_clean}%'
+                {name_cond} OR
+                foreign_name ILIKE '%{kw_clean}%' OR
+                id LIKE '%{kw_clean.upper()}%' OR
+                {address_cond}
             )""")
 
         if city and city.strip():

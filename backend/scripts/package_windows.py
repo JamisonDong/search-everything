@@ -4,7 +4,7 @@
 在有外网的开发机 (Mac/Linux/Win) 上运行。
 核心功能：
 1. 定向跨平台下载 Windows 64位 (win_amd64) 二进制 Wheel 依赖库 (DuckDB, FastAPI, Pydantic 等)。
-2. 自动排除 Windows 不支持的 unix-only 依赖 (如 uvloop)。
+2. 补齐跨平台打包时 pip 无法自动识别的 Windows 专属依赖 (如 colorama)。
 3. 检查并编译前端静态产物至 frontend/dist。
 4. 封装包含 Windows 一键启动脚本、离线安装脚本、导数工具与说明文档的 ZIP 分发包。
 """
@@ -19,7 +19,9 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
-# Windows 环境专属依赖清单 (排除 unix 专属的 uvloop)
+# Windows 环境依赖清单
+# 注意: pip download 按"打包机"平台判断依赖条件，在 Mac/Linux 上打包时会漏掉
+# Windows 专属的间接依赖 (如 click 在 Windows 下需要 colorama)，这里显式列出。
 WINDOWS_REQUIREMENTS = [
     "duckdb>=1.2.0",
     "fastapi>=0.115.0",
@@ -30,6 +32,7 @@ WINDOWS_REQUIREMENTS = [
     "anyio>=3.6.2",
     "idna>=2.8",
     "click>=7.0",
+    "colorama>=0.4.6",
     "h11>=0.8",
     "annotated-types>=0.6.0",
     "typing-extensions>=4.8.0"
