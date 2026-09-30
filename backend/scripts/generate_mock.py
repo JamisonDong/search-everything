@@ -51,7 +51,7 @@ DISTRICTS = {
 DEFAULT_DISTRICTS = ["开发区", "高新区", "新城区", "中心区", "工业园区"]
 
 ROADS = ["中关村南大街", "人民南路", "建设大道", "南京西路", "深南大道", "天府大道", "和平西路", "解放路", "迎宾路", "学府路"]
-COMMUNITIES = ["学城花园", "学府嘉园", "科技新苑", "博雅名轩", "智谷家园", "金地国际", "阳光水岸", "华府名都", "碧桂园", "绿城百合"]
+COMMUNITIES = ["锦绣花园", "学府嘉园", "科技新苑", "博雅名轩", "智谷家园", "金地国际", "阳光水岸", "华府名都", "碧桂园", "绿城百合"]
 
 def generate_id(index: int, birth_year: int) -> str:
     # 模拟 18 位身份证编号格式：地区(6位) + 出生年(4位)月(2位)日(2位) + 顺序码(3位) + 校验码(1位)
@@ -97,7 +97,7 @@ def generate_record(index: int):
     return (record_id, name_cn, gender_cn, age, city, address, gender_en, name_en, annual_income)
 
 def main():
-    parser = argparse.ArgumentParser(description="生成学城项目高仿真测试 CSV 数据集")
+    parser = argparse.ArgumentParser(description="生成高仿真测试 CSV 数据集")
     parser.add_argument("--total", type=int, default=200000, help="生成总数据条数 (默认: 200,000)")
     parser.add_argument("--num-files", type=int, default=20, help="切分的 CSV 文件数量 (默认: 20)")
     parser.add_argument("--output-dir", type=str, default="data/csv_sources", help="输出目录")
@@ -116,7 +116,7 @@ def main():
     current_id_idx = 1
     for file_idx in range(1, args.num_files + 1):
         num_rows = rows_per_file + (1 if file_idx <= remainder else 0)
-        file_path = out_dir / f"xuecheng_data_part_{file_idx:02d}.csv"
+        file_path = out_dir / f"demo_data_part_{file_idx:02d}.csv"
         
         # 头部字段
         header = "id,姓名,性别,年龄,居住城市,详细地址,外文性别,外文名字,年收入\n"

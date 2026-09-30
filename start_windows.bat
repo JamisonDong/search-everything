@@ -50,7 +50,7 @@ exit /b 1
 
 :: ---------- 2. 数据库 ----------
 :DB_CHECK
-if exist "data\xuecheng.duckdb" goto :DOMAIN
+if exist "data\personnel.duckdb" goto :DOMAIN
 if not exist "data\csv_sources" mkdir "data\csv_sources"
 dir /b "data\csv_sources\*.csv" >nul 2>&1
 if errorlevel 1 goto :NO_CSV
@@ -77,7 +77,7 @@ goto :DOMAIN
 
 :DB_FAILED
 echo [!] 数据库创建失败，请检查上方错误信息与 CSV 文件格式。
-del /q "data\xuecheng.duckdb" "data\xuecheng.duckdb.wal" >nul 2>&1
+del /q "data\personnel.duckdb" "data\personnel.duckdb.wal" >nul 2>&1
 pause
 exit /b 1
 

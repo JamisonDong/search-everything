@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# 学城私有数据检索与大屏系统 - Mac/Linux 一键启动脚本
+# 人员数据态势分析大屏 - Mac/Linux 一键启动脚本
 # 100% 离线单机安全运行
 # ==============================================================================
 
@@ -26,8 +26,8 @@ if [ ! -d ".venv" ]; then
 fi
 
 # 2. 检查数据库文件
-if [ ! -f "data/xuecheng.duckdb" ]; then
-    echo "[!] 未检测到数据库文件 (data/xuecheng.duckdb)。"
+if [ ! -f "data/personnel.duckdb" ]; then
+    echo "[!] 未检测到数据库文件 (data/personnel.duckdb)。"
     CSV_COUNT=$(ls -1 data/csv_sources/*.csv 2>/dev/null | wc -l || true)
     if [ "$CSV_COUNT" -gt 0 ]; then
         echo "[*] 检测到 $CSV_COUNT 个原始 CSV 文件，开始导入..."
