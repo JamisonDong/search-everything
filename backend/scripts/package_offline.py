@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-学城私有项目 - 纯断网物理隔离离线分发包打包脚本
+人员数据态势分析大屏 - 纯断网物理隔离离线分发包打包脚本
 在有外网连接的开发机/打包机上运行。
 自动编译前端静态产物、全量下载 Python 离线 Wheel 包，并生成一键离线部署压缩包。
 """
@@ -31,13 +31,13 @@ def write_zip_entry(zipf: zipfile.ZipFile, src: Path, arcname: str):
         zipf.write(src, arcname)
 
 def main():
-    parser = argparse.ArgumentParser(description="学城项目纯离线部署分发包制作工具")
-    parser.add_argument("--output", type=str, default="xuecheng_offline_release.zip", help="输出压缩包文件名")
-    parser.add_argument("--include-db", action="store_true", help="是否包含已生成的本地数据库文件 (data/xuecheng.duckdb)")
+    parser = argparse.ArgumentParser(description="纯离线部署分发包制作工具")
+    parser.add_argument("--output", type=str, default="personnel_dashboard_offline_release.zip", help="输出压缩包文件名")
+    parser.add_argument("--include-db", action="store_true", help="是否包含已生成的本地数据库文件 (data/personnel.duckdb)")
     args = parser.parse_args()
 
     print("==========================================================")
-    print("    学城私有项目 - 纯断网离线部署分发包制作开始          ")
+    print("    人员数据态势分析大屏 - 纯断网离线部署分发包制作开始          ")
     print("==========================================================")
 
     # 1. 编译前端静态资源
@@ -80,12 +80,12 @@ def main():
     ]
 
     if args.include_db:
-        db_file = PROJECT_ROOT / "data" / "xuecheng.duckdb"
+        db_file = PROJECT_ROOT / "data" / "personnel.duckdb"
         if db_file.exists():
-            include_paths.append("data/xuecheng.duckdb")
+            include_paths.append("data/personnel.duckdb")
             print(f"[*] 已选择包含预生成数据库文件 (大小: {db_file.stat().st_size / (1024*1024):.2f} MB)")
         else:
-            print("[!] 未找到 data/xuecheng.duckdb，跳过包含。")
+            print("[!] 未找到 data/personnel.duckdb，跳过包含。")
 
     # 4. 创建 ZIP 压缩包
     print(f"\n>>> 步骤 4/4: 正在压缩并封装为离线介质包 {output_zip_path.name} ...")

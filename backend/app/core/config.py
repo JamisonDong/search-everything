@@ -6,12 +6,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 PROJECT_ROOT = BASE_DIR.parent
 
 class Settings(BaseModel):
-    PROJECT_NAME: str = "学城私有数据智能检索大屏系统"
+    PROJECT_NAME: str = "人员数据态势分析大屏系统"
     VERSION: str = "1.0.0"
     SECURITY_LEVEL: str = "涉密专机 · 严禁外联"
     
     # 路径配置
-    DB_PATH: Path = PROJECT_ROOT / "data" / "xuecheng.duckdb"
+    DB_PATH: Path = PROJECT_ROOT / "data" / "personnel.duckdb"
     CSV_DIR: Path = PROJECT_ROOT / "data" / "csv_sources"
     LOG_DIR: Path = PROJECT_ROOT / "logs"
     AUDIT_LOG_FILE: Path = PROJECT_ROOT / "logs" / "audit_log.jsonl"

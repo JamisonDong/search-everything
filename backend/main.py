@@ -11,7 +11,7 @@ from backend.app.api.endpoints import router as api_router
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
-    description="学城私有项目 - 1600万数据单机涉密智能检索大屏系统"
+    description="人员数据态势分析大屏 - 1600万数据单机涉密智能检索系统"
 )
 
 # 允许本地前端跨域调试

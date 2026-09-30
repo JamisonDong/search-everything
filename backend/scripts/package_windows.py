@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-学城私有项目 - Windows 纯断网离线安装包专属打包工具
+人员数据态势分析大屏 - Windows 纯断网离线安装包专属打包工具
 在有外网的开发机 (Mac/Linux/Win) 上运行。
 核心功能：
 1. 定向跨平台下载 Windows 64位 (win_amd64) 二进制 Wheel 依赖库 (DuckDB, FastAPI, Pydantic 等)。
@@ -87,14 +87,14 @@ def write_zip_entry(zipf: zipfile.ZipFile, src: Path, arcname: str):
         zipf.write(src, arcname)
 
 def main():
-    parser = argparse.ArgumentParser(description="制作学城项目 Windows 专属离线部署安装包")
-    parser.add_argument("--output", type=str, default="xuecheng_windows_v1.0.zip", help="输出压缩包名")
+    parser = argparse.ArgumentParser(description="制作 Windows 专属离线部署安装包")
+    parser.add_argument("--output", type=str, default="personnel_dashboard_windows_v1.0.zip", help="输出压缩包名")
     parser.add_argument("--py-version", type=str, default="311", help="目标 Windows 机器 Python 版本 (默认 311 代表 Python 3.11)")
-    parser.add_argument("--include-db", action="store_true", help="是否随包携带预制数据库 (data/xuecheng.duckdb)")
+    parser.add_argument("--include-db", action="store_true", help="是否随包携带预制数据库 (data/personnel.duckdb)")
     args = parser.parse_args()
 
     print("==========================================================")
-    print(f"  学城私有项目 - Windows 纯断网离线分发包打包工具        ")
+    print(f"  人员数据态势分析大屏 - Windows 纯断网离线分发包打包工具        ")
     print(f"  目标系统: Windows (x86_64 / win_amd64)                 ")
     print(f"  目标 Python 版本: {args.py_version}                     ")
     print("==========================================================")
@@ -131,9 +131,9 @@ def main():
     ]
 
     if args.include_db:
-        db_path = PROJECT_ROOT / "data" / "xuecheng.duckdb"
+        db_path = PROJECT_ROOT / "data" / "personnel.duckdb"
         if db_path.exists():
-            include_items.append(("data/xuecheng.duckdb", "data/xuecheng.duckdb"))
+            include_items.append(("data/personnel.duckdb", "data/personnel.duckdb"))
             print(f"[*] 随包包含 1600 万已建库数据库: {db_path.name} ({db_path.stat().st_size / (1024*1024):.2f} MB)")
 
     # 4. 压缩封装

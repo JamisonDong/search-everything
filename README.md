@@ -1,4 +1,4 @@
-# 学城私有数据智能检索与涉密大屏系统
+# 人员数据智能检索与态势分析大屏系统
 
 > 专为政府工作人员打造的 **1600万级** 大数据离线检索、态势感知大屏与单机涉密管理系统。
 
@@ -51,7 +51,7 @@ search-everything/
 │   └── dist/                 # 预编译好的纯本地离线静态资源包 (已提交入库，改动前端后需重新构建并提交)
 ├── data/                     # 数据专属目录 (.gitignore 严格隔离)
 │   ├── csv_sources/          # 存放用户的 20+ 个原始 CSV 文件
-│   └── xuecheng.duckdb       # 本地 DuckDB 物理数据库单文件
+│   └── personnel.duckdb      # 本地 DuckDB 物理数据库单文件
 ├── logs/                     # 涉密安全操作审计日志目录
 ├── tests/                    # 全链路自动化测试用例
 ├── start_mac.sh              # Mac/Linux 一键启动脚本
@@ -69,7 +69,7 @@ search-everything/
 3. **双击 `start_windows.bat`**，首次运行会自动完成：
    - 未安装 Python 时，自动安装 Python 3.11 到当前用户目录（无需管理员权限，依次尝试 winget、国内镜像、官方源）；
    - 通过阿里云 / 清华镜像安装 DuckDB、FastAPI 等依赖；
-   - **从 CSV 自动创建数据库** `data\xuecheng.duckdb` 并建立索引（嵌入式数据库，无需安装任何数据库软件；1600 万条约需 3~5 分钟）；
+   - **从 CSV 自动创建数据库** `data\personnel.duckdb` 并建立索引（嵌入式数据库，无需安装任何数据库软件；1600 万条约需 3~5 分钟）；
    - 配置本地访问域名：在本机 hosts 中加入 `127.0.0.1 dashboard.internal`（**首次会弹出一次管理员授权，请点“是”**），并将该域名加入系统代理的例外列表；
    - 启动服务，就绪后自动在浏览器打开大屏 👉 `http://dashboard.internal:8000`
 
@@ -146,24 +146,24 @@ python backend/main.py
 
 - **目标机是 Windows**（最常见，打包机可以是 Mac/Linux/Windows）：
   ```bash
-  python3 backend/scripts/package_windows.py --output xuecheng_windows_v1.0.zip --py-version 311
+  python3 backend/scripts/package_windows.py --output personnel_dashboard_windows_v1.0.zip --py-version 311
   ```
   `--py-version` 必须与目标机安装的 Python 版本一致（如 3.11 填 `311`，3.12 填 `312`）。
 - **目标机与打包机为同一操作系统和 Python 版本**：
   ```bash
-  python3 backend/scripts/package_offline.py --output xuecheng_offline_v1.0.zip
+  python3 backend/scripts/package_offline.py --output personnel_dashboard_offline_v1.0.zip
   ```
   注意 `package_offline.py` 只下载**打包机本机平台**的依赖，在 Mac 上打的包无法装到 Windows 断网机上。
 > 若希望将已导入好的 1600 万数据库直接带入目标机，可追加 `--include-db` 参数：
-> `python3 backend/scripts/package_offline.py --output xuecheng_offline_v1.0.zip --include-db`
+> `python3 backend/scripts/package_offline.py --output personnel_dashboard_offline_v1.0.zip --include-db`
 
 打包脚本会自动：
 1. 预先构建前端静态文件至 `frontend/dist`（**断网机无需安装 Node.js/npm**）。
 2. 将后端所需的全部 Python 依赖以二进制 Wheel 下载至 `offline_wheels/`。
-3. 封装为单一压缩包 `xuecheng_offline_v1.0.zip`（仅约 20MB）。
+3. 封装为单一压缩包 `personnel_dashboard_offline_v1.0.zip`（仅约 20MB）。
 
 ### 第二步：介质拷贝与安全摆渡
-通过涉密合规光盘刻录或专用安全摆渡 U 盘，将 `xuecheng_offline_v1.0.zip` 拷贝至目标断网机并解压。
+通过涉密合规光盘刻录或专用安全摆渡 U 盘，将 `personnel_dashboard_offline_v1.0.zip` 拷贝至目标断网机并解压。
 
 ### 第三步：断网机一键初始化与启动
 目标机只需预先安装 Python 3.10+，解压后直接执行：

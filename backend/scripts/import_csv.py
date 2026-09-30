@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-学城私有项目 - 1600万数据高效清洗与导入脚本 (基于 DuckDB 高性能列存引擎)
+人员数据态势分析大屏 - 1600万数据高效清洗与导入脚本 (基于 DuckDB 高性能列存引擎)
 支持自动编码探测 (UTF-8 / GBK / GB18030)、多文件并行清洗、字段规范化、去重、索引创建与性能评测。
 """
 
@@ -161,9 +161,9 @@ def build_performance_indexes(con: duckdb.DuckDBPyConnection):
     print(f"=== 索引构建完成！耗时: {time.time() - t0:.2f} 秒 ===")
 
 def main():
-    parser = argparse.ArgumentParser(description="学城数据高效导入与索引生成")
+    parser = argparse.ArgumentParser(description="人员数据高效导入与索引生成")
     parser.add_argument("--csv-dir", type=str, default="data/csv_sources", help="CSV 存放目录")
-    parser.add_argument("--db-path", type=str, default="data/xuecheng.duckdb", help="DuckDB 数据库文件路径")
+    parser.add_argument("--db-path", type=str, default="data/personnel.duckdb", help="DuckDB 数据库文件路径")
     args = parser.parse_args()
 
     csv_dir = Path(args.csv_dir)
