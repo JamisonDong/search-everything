@@ -46,12 +46,12 @@ def test_full_system():
         assert detail["id"] == person_id
         print(f"   [√] 档案调阅成功: {detail['name']} ({detail['gender']}, {detail['age']}岁, {detail['city']})")
 
-    print("5. 测试涉密安全审计记录 API (/api/audit/logs)...")
+    print("5. 测试安全审计记录 API (/api/audit/logs)...")
     res = client.get("/api/audit/logs")
     assert res.status_code == 200
     logs = res.json()
     assert len(logs) > 0, "Audit logs should not be empty after search"
-    print(f"   [√] 安全审计日志生效！已留存 {len(logs)} 条涉密操作轨迹，最新行为: {logs[0]['action']}")
+    print(f"   [√] 安全审计日志生效！已留存 {len(logs)} 条操作轨迹，最新行为: {logs[0]['action']}")
 
     print("6. 测试脱敏模式 (/api/search?mask_sensitive=true)...")
     res = client.get("/api/search?keyword=李&mask_sensitive=true&page=1&page_size=5")

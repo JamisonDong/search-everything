@@ -14,7 +14,7 @@
             <div class="h-2 w-2 rounded-full bg-cyan-400 animate-ping"></div>
             <h3 class="text-lg font-bold text-white tracking-wide">人员全景数字档案</h3>
             <span class="rounded bg-red-900/60 border border-red-500/50 px-2 py-0.5 text-[11px] font-semibold text-red-300">
-              密级·机密
+              敏感信息
             </span>
           </div>
           <button 
@@ -85,16 +85,16 @@
             <ul class="mt-2 space-y-1 text-xs text-slate-300 list-disc list-inside">
               <li>人员常住所属：<span class="text-white">{{ person.city }}</span>，信息核验匹配一致</li>
               <li>收入所属分位：<span class="text-amber-300 font-semibold">{{ person.income_display }}</span></li>
-              <li>涉密调阅留痕：查询已上链审计日志，操作员工号留存</li>
+              <li>调阅留痕：本次调阅已写入审计日志，记录操作员工号</li>
             </ul>
           </div>
         </div>
       </div>
 
-      <!-- 底部涉密审计警示 -->
+      <!-- 底部数据安全提醒 -->
       <div class="mt-8 border-t border-slate-800 pt-4">
         <div class="rounded bg-red-950/30 border border-red-900/50 p-3 text-[11px] text-red-400 leading-relaxed">
-          ⚠️ <strong>涉密提醒：</strong> 本系统包含国家涉密与个人核心敏感数据。每次调阅人员全景档案均已被安全网关留痕审计，严禁擅自拍摄、拷贝或外泄。
+          ⚠️ <strong>数据安全提醒：</strong> 本系统包含个人敏感信息。每次调阅人员档案均已记录审计日志，严禁擅自拍摄、拷贝或外传。
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ from typing import Dict, Any, List, Optional
 import duckdb
 
 def mask_text(name: str, id_card: str, address: str, income: float) -> Dict[str, Any]:
-    """涉密数据动态脱敏处理"""
+    """敏感数据动态脱敏处理"""
     # 姓名脱敏
     if not name:
         masked_name = ""

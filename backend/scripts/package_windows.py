@@ -162,7 +162,7 @@ def main():
     print(f" 生成文件: {output_zip.resolve()}")
     print(f" 文件体积: {zip_mb:.2f} MB")
     print(" 交付说明:")
-    print(" 1. 将此压缩包拷贝至涉密 Windows 电脑解压。")
+    print(" 1. 将此压缩包拷贝至目标 Windows 电脑解压。")
     print(" 2. 双击运行 install_offline.bat 进行零网络本地安装。")
     print(" 3. 双击运行 start_windows.bat 启动服务并自动打开大屏。")
     print(" 4. 如需现场导数，将 CSV 文件放入 data\\csv_sources 并双击 import_csv.bat。")

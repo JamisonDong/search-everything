@@ -11,7 +11,7 @@
         <div class="flex items-center justify-between border-b border-slate-700/80 pb-4">
           <div class="flex items-center gap-2">
             <span class="text-emerald-400">🛡️</span>
-            <h3 class="text-lg font-bold text-white tracking-wide">涉密安全操作审计日志</h3>
+            <h3 class="text-lg font-bold text-white tracking-wide">安全操作审计日志</h3>
           </div>
           <button 
             @click="emit('close')" 

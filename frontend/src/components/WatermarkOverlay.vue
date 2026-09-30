@@ -19,7 +19,7 @@ const props = defineProps({
   },
   operator: {
     type: String,
-    default: '涉密人员-007'
+    default: '操作员-01'
   },
   terminalId: {
     type: String,
@@ -47,7 +47,7 @@ const renderWatermark = () => {
 
   const now = new Date()
   const timeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`
-  const text1 = `【涉密数据 · 严禁外传】`
+  const text1 = `【内部数据 · 严禁外传】`
   const text2 = `${props.operator} | ${props.terminalId} | ${timeStr}`
 
   ctx.font = '14px sans-serif'

@@ -5,7 +5,7 @@ from backend.app.core.config import settings
 def get_db_connection() -> duckdb.DuckDBPyConnection:
     """
     获取 DuckDB 只读只查连接
-    只读模式可支持高并发无锁并发查询，保障底层涉密数据不被非法变更
+    只读模式可支持高并发无锁并发查询，保障底层数据不被非法变更
     """
     if not settings.DB_PATH.exists():
         # 如果数据库尚未生成，创建连接并初始化基础结构

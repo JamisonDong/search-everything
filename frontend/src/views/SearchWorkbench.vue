@@ -3,7 +3,7 @@
     <!-- 顶部指挥中心状态栏 -->
     <header class="sticky top-0 z-40 border-b border-command-border bg-command-bg/90 backdrop-blur-md px-6 py-3 shadow-lg">
       <div class="flex items-center justify-between">
-        <!-- 标题与密级标 -->
+        <!-- 标题与数据标识 -->
         <div class="flex items-center gap-4">
           <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-blue-700 text-white shadow-glow-cyan">
             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -16,7 +16,7 @@
                 人员信息检索工作台
               </h1>
               <span class="rounded bg-red-950/80 border border-red-500/80 px-2 py-0.5 text-xs font-bold text-red-400 tracking-widest animate-pulse">
-                涉密专机 · 严禁外联
+                内部数据 · 严禁外传
               </span>
             </div>
             <div class="flex items-center gap-4 text-xs text-slate-400 mt-0.5 font-mono">
