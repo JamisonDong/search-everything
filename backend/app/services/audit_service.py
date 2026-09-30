@@ -8,7 +8,7 @@ class AuditService:
     @staticmethod
     def log_event(action: str, operator: str, details: Dict[str, Any], client_ip: str = "127.0.0.1"):
         """
-        记录涉密安全审计日志
+        记录安全审计日志
         action: SEARCH, VIEW_DETAIL, EXPORT_ATTEMPT, LOGIN
         """
         event = {

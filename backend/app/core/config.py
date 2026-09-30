@@ -8,7 +8,7 @@ PROJECT_ROOT = BASE_DIR.parent
 class Settings(BaseModel):
     PROJECT_NAME: str = "人员数据态势分析大屏系统"
     VERSION: str = "1.0.0"
-    SECURITY_LEVEL: str = "涉密专机 · 严禁外联"
+    SECURITY_LEVEL: str = "内部数据 · 严禁外传"
     
     # 路径配置
     DB_PATH: Path = PROJECT_ROOT / "data" / "personnel.duckdb"
@@ -20,8 +20,8 @@ class Settings(BaseModel):
     HOST: str = "127.0.0.1"
     PORT: int = 8000
     
-    # 默认操作员标识 (涉密水印用)
-    DEFAULT_OPERATOR: str = "涉密操作员-01"
+    # 默认操作员标识 (防拍水印用)
+    DEFAULT_OPERATOR: str = "操作员-01"
     TERMINAL_ID: str = "SEC-TERM-LOCAL"
 
 settings = Settings()

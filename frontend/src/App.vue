@@ -50,7 +50,7 @@ const maskSensitive = ref(false)
 const auditDrawerVisible = ref(false)
 const cityList = ref([])
 
-const currentOperator = ref('涉密警员-01')
+const currentOperator = ref('操作员-01')
 const terminalId = ref('SEC-LOCAL-PC')
 
 const workbench = ref(null)

@@ -34,7 +34,7 @@
         </div>
 
         <div class="header-side header-right">
-          <span class="sec-badge">涉密专机 · 严禁外联</span>
+          <span class="sec-badge">内部数据 · 严禁外传</span>
           <button class="hdr-btn" @click="emit('open-search')">检索工作台</button>
           <button class="hdr-btn" @click="emit('open-audit')">安全审计</button>
           <button class="hdr-btn" @click="toggleFullscreen">{{ isFullscreen ? '退出全屏' : '全屏展示' }}</button>

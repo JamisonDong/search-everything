@@ -53,7 +53,7 @@ def search_personnel(
         mask_sensitive=mask_sensitive
     )
 
-    # 记录涉密审计日志
+    # 记录安全审计日志
     client_ip = request.client.host if request.client else "127.0.0.1"
     AuditService.log_event(
         action="SEARCH",
